@@ -13,6 +13,9 @@ dotenv.config({
     path: './env'
 })
 
+import express from 'express'
+
+const app = express()
 
 // here we can also use the then catch for the promises
 // here we can also use the other listeners 
@@ -61,7 +64,7 @@ const app = express()
 // always use the semi-colon in front of the iffee
 ;( async () => {
     try {
-        await mongoose.connect(`${MONGODB_URI}/${DB_NAME}`)
+        await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)
 
         // now we can also apply the listeners in it of the express
         app.on("error" ,(error) => {
