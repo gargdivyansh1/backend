@@ -1,8 +1,10 @@
 // lets do it with the use of promised 
 // resolve reject or the resolve catch could also work
-const asynchandler = (requesthandler) => (req,res,next) => {
+const asynchandler = (requesthandler) => {
+    return (req,res,next) => {
     Promise.resolve(requesthandler(req,res,next))
     .catch((error) => next(error))
+    }
 }
 
 export {asynchandler}
