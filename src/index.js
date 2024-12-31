@@ -3,30 +3,24 @@
 // instead of using the require we can also use the modules like import
 
 import dotenv from "dotenv"
+//import app from "app.js"
 
 // here somtimes it is not importing internal file 
 // hence we have to add the full address 
 // which is ./db/index.js
 import connectDB from "./db/index.js";
+import {app} from './app.js'
 
 dotenv.config({
-    path: './env'
+    path: './.env'
 })
-
-import express from 'express'
-
-const app = express()
 
 // here we can also use the then catch for the promises
 // here we can also use the other listeners 
 connectDB()
 .then(() => {
-    app.on("error" , (error) => {
-        console.log("ERROR " , error);
-        throw error
-    })
-    
-    app.listen(process.env.PORT || 8000, () => {
+
+    app.listen(process.env.PORT || 7000, () => {
         console.log(`Server is running at port : ${process.env.PORT}`);
     })
 })

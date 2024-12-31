@@ -21,19 +21,20 @@ app.use(cookieParser())
 
 import userRouter from './routes/user.routes.js'
 
+
 // routes declaration 
 // here we use middleware to connect with the routes 
-
-app.use("api/v1/users" , userRouter)
+// try {
+//     app.post("/api/v1/users" , userRouter)
+// } catch (error) {
+//     return res.end(error);
+// }
+app.use("/api/v1/users" , userRouter)
 
 // it will create the url like this
-//https://localhost:8000/api/v1/users/and now which route method we arre calling which we have deffined in the user router
-
-
-
-export default app 
+//https://localhost:8000/api/v1/users/and now which route method we arre calling which we have deffined in the user router 
 //or can export in this way also 
-// export {app} 
+export {app} 
 
  
 // getting the cookies-parser 
