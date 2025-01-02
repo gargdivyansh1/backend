@@ -70,7 +70,7 @@ userSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {
             _id: this._id,
-            emials : this.email,
+            emails : this.email,
             username : this.username,
             fullname : this.fullname
         },
