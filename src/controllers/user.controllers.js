@@ -10,6 +10,7 @@ import { uploadOnCloudinary } from '../utils/cloudinary.js'
 import { ApiResponse } from '../utils/ApiResponse.js'
 
 import jwt from 'jsonwebtoken'
+import mongoose from 'mongoose' 
 
 
 const generateAccessAndRefereshTokens = async (userId) => {
@@ -313,9 +314,173 @@ const refrestAccessToken = asynchandler(async (req, res) => {
     }
 })
 
+const changeCurrentPassword = asynchandler(async (req,res) => {
+    const {oldPassword , newPassword} = req.body
+
+    // now we habe to find the user 
+    // for this we make the auth middleware which gives us the user 
+    const user = awati User.findBtId(req.user?._id)
+
+    const isPasswordValid = await user.isPasswordCorrect(oldPassword)
+
+    if(!isPasswordValid){
+        throw new ApiError(401 , "old password you entered is incorrect")
+    }
+
+    // now set the password
+    user.password = newPassword
+    await user.save({validateBeforeSave = false})
+
+    return res.status(200).json(new ApiResponse(200 , {} , "Password changed successfully"))
+})
+
+const currentUser = asynchandler(asynch (req,res) => {
+    return res
+    .status(200)
+    .json(
+        200,
+        req.user,
+        "The current user is fetched successfully"
+    )
+})
+
+// now if the user wants to update the profile
+const updateProfile = asynchandler(async (req,res) => {
+    const{fullname , email , username} = req.body
+
+    if(!fullname || !email || !username){
+        throw new ApiError(400 , "enter all fields.")
+    }
+
+    cont user = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            fullname,
+            username,
+            email
+        },
+        {
+            new: true,
+            runValidators: true
+        }
+    ).select("-password ")
+
+    // now return 
+    return res
+    .status(200)
+    .json(new ApiResponse(200 , user , "The user has been updated succesfully"))
+
+    // could also be done in this way also 
+    // const user = await User.findById(req.user?._id)
+
+    // if(!user){
+    //     throw new ApiError(404, "Error while finding the user")
+    // }
+
+    // if(user.email === email || user.username === username || user.fullname === fullname){
+    //     throw new ApiError(409 , "User with this email or username or fullname already exists")
+    // }
+
+    // user.fullname = fullname
+    // user.email = email
+    // user.username = username
+
+    // await user.save({validateBeforeSave = false})
+
+    // return res
+    // .status(200)
+    // .json(
+    //     200 ,
+    //     user,
+    //     "The user details are updated successfully"
+    // )
+})
+
+// now updating the avatar
+const updateAvatar = asynchandler(async (req,res) => {
+
+    // first take the local path of the avatar
+    const avatarPath = req.file?.path
+    
+    if(!avatarPath){
+        throw new ApiError(400 , "Avatar file is missing")
+    }
+
+    // abb jb humhare pass file hai too isse upload karo cloudinary pr
+    const avatar = await uploadOnCloudiary(avatarPath)
+
+    if(!avatar.url){
+        throw new ApiError(500 , "Error while uploading the avatar")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            avatar : avatar.url
+        },
+        {
+            new:true,
+            runValidators: true
+        }.select("-password")
+    )
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200 ,
+            user,
+            "The avatar file has been updated successfully"
+        )
+    )
+
+})
+
+const updateCoverImage = asynchandler(async (req,res) => {
+
+    // take the path 
+    cosnt coverPath = req.file?.path
+
+    if(!coverPath){
+        throw new ApiError(400 , "the cover image file is missing")
+    }
+
+    // upload it to the cloudinary
+    const coverImage = await uploadOnCloudinary(coverPath)
+
+
+    if(!coverImage.url){
+        throw new ApiError(500 , "Error while uploading the cover image")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            coverImage: coverImage.url
+        },
+        {
+            new: true,
+            runValidators: true
+        }
+    ).select("-password")
+
+    return res
+    .status(200)
+    .json(
+        200 , 
+        user,
+        "The cover image has been updated successfully"
+    )
+})
+
 export {
     registerUser,
     loginUser,
     logoutUser,
-    refrestAccessToken              
+    refrestAccessToken,
+    changeCurrentPassword,
+    currentUser,
+    updateProfile,
+    updateAvatar,
+    updateCoverImage
 }
