@@ -25,18 +25,21 @@ router.route("/register").post(
 
 router.route("/login").post(loginUser)
 router.route("/logout").post(verifyJWT, logoutUser)
+
 router.route("/refresh-access-token").post(verifyJWT, refrestAccessToken)
+
 router.route("/change-password").post(verifyJWT, changeCurrentPassword)
 router.route("/current-user").get(verifyJWT, currentUser)
 router.route("/update-profile").patch(verifyJWT, updateProfile)
+
 router.route("/update-avatar").patch(
     verifyJWT,
-    update.single("avatar"),
+    upload.single("avatar"),
     updateAvatar
 )
 router.route("/update-coverimage").patch(
     verifyJWT,
-    update.single("coverImage"),
+    upload.single("coverImage"),
     updateCoverImage
 )
 

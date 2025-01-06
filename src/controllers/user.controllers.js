@@ -175,7 +175,7 @@ const loginUser = asynchandler(async (req, res) => {
     // here we are relying on the fact that in this the user can login by the username or email any 
     // if we want both then simply use and 
     // or if you want to check one then only write one 
-    if (!(username || email)) {
+    if (!username || !email) {
         throw new ApiError(400, "username or password is required");
     }
 
@@ -355,9 +355,11 @@ const updateProfile = asynchandler(async (req, res) => {
     const user = await User.findByIdAndUpdate(
         req.user?._id,
         {
-            fullname,
-            username,
-            email
+            $set: {
+                fullname,
+                username,
+                email: email
+            }
         },
         {
             new: true,
@@ -407,22 +409,22 @@ const updateAvatar = asynchandler(async (req, res) => {
     }
 
     // abb jb humhare pass file hai too isse upload karo cloudinary pr
-    const avatar = await uploadOnCloudiary(avatarPath)
+    const avatar = await uploadOnCloudinary(avatarPath)
 
     if (!avatar.url) {
         throw new ApiError(500, "Error while uploading the avatar")
     }
 
     const user = await User.findByIdAndUpdate(
-        req.user?._id,
+        req.user._id,
         {
             avatar: avatar.url
         },
         {
             new: true,
             runValidators: true
-        }.select("-password")
-    )
+        }
+    ).select("-password")
 
     return res
         .status(200)
@@ -454,7 +456,7 @@ const updateCoverImage = asynchandler(async (req, res) => {
     }
 
     const user = await User.findByIdAndUpdate(
-        req.user?._id,
+        req.user._id,
         {
             coverImage: coverImage.url
         },
@@ -467,9 +469,12 @@ const updateCoverImage = asynchandler(async (req, res) => {
     return res
         .status(200)
         .json(
-            200,
-            user,
-            "The cover image has been updated successfully"
+            new ApiResponse(
+                200,
+                user,
+                "The cover image has been updated successfully"
+            )
+
         )
 })
 
@@ -541,6 +546,8 @@ const getUserChannelProfile = asynchandler(async (req, res) => {
         }
     ])
 
+
+    console.log(channel)
     if (!channel?.length) {
         throw new ApiError(404, "channel does not exists")
     }
@@ -580,9 +587,9 @@ const watchHistoryPipeline = asynchandler(async (req, res) => {
                             // sub pipeline
                             pipeline: [
                                 {
-                                    $project : {
-                                        fullname: 1 ,
-                                        username: 1 ,
+                                    $project: {
+                                        fullname: 1,
+                                        username: 1,
                                         avatar: 1
                                     }
                                 }
@@ -602,14 +609,14 @@ const watchHistoryPipeline = asynchandler(async (req, res) => {
     ])
 
     return res
-    .status(200)
-    .json(
-        new ApiResponse(
-            200 , 
-            user[0].watchHistory,
-            "Watch history fetced successfully"
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                user[0].watchHistory,
+                "Watch history fetced successfully"
+            )
         )
-    )
 })
 
 export {

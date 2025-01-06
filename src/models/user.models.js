@@ -59,12 +59,11 @@ userSchema.pre("save" , async function(next) {
 })
 
 // we can also make our custom methods
-userSchema.methods.isPasswordCorrect = async function
-(password){
+userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password, this.password)
 }
 
-// NOW HERE WE WILL MAKE TWO METHODS FOR MAKING TWO DIFFERNET TOKENS
+// NOW HERE WE WILL MAKE  TWO METHODS FOR MAKING TWO DIFFERNET TOKENS
 
 userSchema.methods.generateAccessToken = function(){
     return jwt.sign(
