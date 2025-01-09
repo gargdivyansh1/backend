@@ -1,4 +1,4 @@
-import { asynchandler } from '../utils/asynchandler.js';
+import { asynchandler } from '../utils/asynchandler.js'
 import { ApiError } from '../utils/ApiError.js'
 
 // for checking if the user is existed or not
