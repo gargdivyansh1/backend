@@ -16,3 +16,9 @@ the refresh token are for the longer period of time and they do not expire soon
 we can use the refresh token for the validation like 
 if the refresh token of the user and the saved in the database is same then the user doesnt have to login again and again 
 // we will provide him the new access token each time he logined again  -->
+
+
+# for joining the backend and the frontend we use the axious and also proxy chaining is important 
+# axious for accessing the backend url 
+# proxy for showing that both frontend and backend are hosted on the same local host 
+
