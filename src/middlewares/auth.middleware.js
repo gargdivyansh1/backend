@@ -3,7 +3,7 @@ import { asynchandler } from "../utils/asynchandler.js"
 import { User } from "../models/user.models.js"
 import jwt from 'jsonwebtoken'
 
-export const verifyJWT = asynchandler(async (req,_,next) => {
+const verifyJWt = asynchandler(async (req,_,next) => {
     try {
         const token = req.cookies?.accessToken || req.header("Authorisation")?.replace("Bearer " , "")
     
@@ -25,3 +25,5 @@ export const verifyJWT = asynchandler(async (req,_,next) => {
         throw new ApiError(401 , error?.message || "Invaliid Access")
     }
 })
+
+export {verifyJWt}

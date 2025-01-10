@@ -1,4 +1,4 @@
-import { asynchandler as asyncHandler}  from "../utils/asynchandler"
+import { asynchandler}  from "../utils/asynchandler.js"
 import {Like} from '../models/like.models.js'
 import {Tweet} from '../models/tweet.models.js'
 import {Comment} from '../models/comment.models.js'
@@ -8,7 +8,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import mongoose from "mongoose"
 import { isValidObjectId } from "mongoose"
 
-const toggleVideoLike = asyncHandler(async (req, res) => {
+const toggleVideoLike = asynchandler(async (req, res) => {
 
     // getting the user
     const user = req.user._id
@@ -75,7 +75,7 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
     }
 })
 
-const toggleCommentLike = asyncHandler(async (req, res) => {
+const toggleCommentLike = asynchandler(async (req, res) => {
 
     // getting the user 
     const user = req.user._id
@@ -144,7 +144,7 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
 
 })
 
-const toggleTweetLike = asyncHandler(async (req, res) => {
+const toggleTweetLike = asynchandler(async (req, res) => {
 
     // getting user from the database
     const user = req.user._id
@@ -210,7 +210,7 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
 
 })
 
-const getLikedVideos = asyncHandler(async (req, res) => {
+const getLikedVideos = asynchandler(async (req, res) => {
     
     // get the user 
     const userId = req.user._id

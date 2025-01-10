@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
 import {ApiError} from '../utils/ApiError.js'
 import {ApiResponse} from '../utils/ApiResponse.js'
-import asynchandler from '../utils/asynchandler.js'
+import {asynchandler} from '../utils/asynchandler.js'
 import {Video} from '../models/video.models.js'
 
 const getAllVideos = asynchandler( async (req,res) => {

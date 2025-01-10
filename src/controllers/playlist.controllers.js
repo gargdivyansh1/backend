@@ -3,9 +3,9 @@ import {Playlist} from "../models/playlist.models.js"
 import {Video} from "../models/video.models.js"
 import {ApiError} from "../utils/ApiError.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
-import {asynchandler as asyncHandler} from "../utils/asynchandler.js"
+import {asynchandler} from "../utils/asynchandler.js"
 
-const createPlaylist = asyncHandler(async (req, res) => {
+const createPlaylist = asynchandler(async (req, res) => {
 
     const {name, description , videos} = req.body
 
@@ -61,7 +61,7 @@ const createPlaylist = asyncHandler(async (req, res) => {
 
 })
 
-const getUserPlaylists = asyncHandler(async (req, res) => {
+const getUserPlaylists = asynchandler(async (req, res) => {
 
     // getting user
     const {userId} = req.params
@@ -88,7 +88,7 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
     )
 })
 
-const getPlaylistById = asyncHandler(async (req, res) => {
+const getPlaylistById = asynchandler(async (req, res) => {
 
     // getting the list id form the params
     const {playlistId} = req.params
@@ -119,7 +119,7 @@ const getPlaylistById = asyncHandler(async (req, res) => {
     )
 })
 
-const addVideoToPlaylist = asyncHandler(async (req, res) => {
+const addVideoToPlaylist = asynchandler(async (req, res) => {
 
     const {playlistId, videoId} = req.params
 
@@ -167,7 +167,7 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
     )
 })
 
-const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
+const removeVideoFromPlaylist = asynchandler(async (req, res) => {
 
     const {playlistId, videoId} = req.params
     if(!playlistId || !videoId){
@@ -214,7 +214,7 @@ const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
 
 })
 
-const deletePlaylist = asyncHandler(async (req, res) => {
+const deletePlaylist = asynchandler(async (req, res) => {
 
     const {playlistId} = req.params
     if(!playlistId){
@@ -245,7 +245,7 @@ const deletePlaylist = asyncHandler(async (req, res) => {
     )
 })
 
-const updatePlaylist = asyncHandler(async (req, res) => {
+const updatePlaylist = asynchandler(async (req, res) => {
 
     const {playlistId} = req.params
     if(!playlistId){
