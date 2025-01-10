@@ -23,3 +23,5 @@ router.route("/delete-tweet/:tweetId").delete(
     verifyJWT,
     deleteTweet
 )
+
+export default router
