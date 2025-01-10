@@ -24,12 +24,15 @@ router.route("/register").post(
 )
 
 router.route("/login").post(loginUser)
+
 router.route("/logout").post(verifyJWT, logoutUser)
 
 router.route("/refresh-access-token").post(verifyJWT, refrestAccessToken)
 
 router.route("/change-password").post(verifyJWT, changeCurrentPassword)
+
 router.route("/current-user").get(verifyJWT, currentUser)
+
 router.route("/update-profile").patch(verifyJWT, updateProfile)
 
 router.route("/update-avatar").patch(
@@ -47,6 +50,7 @@ router.route("/update-coverimage").patch(
 // and the name should be same as the name taken while taking the data 
 // as the information is taking from the params
 router.route("/c/:username").get(verifyJWT, getUserChannelProfile)
+
 router.route("/history").get(verifyJWT, watchHistoryPipeline)
 
 export default router
